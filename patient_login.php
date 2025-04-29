@@ -1,7 +1,6 @@
 <?php
-// patient_login.php
+// Unified login system for all user types
 
-// Allow requests from any origin (CORS) if needed
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
 header("Access-Control-Allow-Methods: POST");
@@ -29,17 +28,47 @@ if (!isset($data['username']) || !isset($data['password'])) {
     exit();
 }
 
-$username = $conn->real_escape_string($data['username']);
-$password = $conn->real_escape_string($data['password']);
+$username = $data['username'];
+$password = $data['password'];
 
-// Query to check patient
-$query = "SELECT * FROM patients WHERE username = '$username' AND password = '$password'";
-$result = $conn->query($query);
+// Array of tables to check
+$tables = [
+    'admins' => 'Admin',
+    'patients' => 'Patient',
+    'doctorlogin' => 'Doctor',
+    'pharmacists' => 'Pharmacist'
+];
 
-if ($result->num_rows > 0) {
-    echo json_encode(["success" => true, "message" => "Login successful."]);
-} else {
-    echo json_encode(["success" => false, "message" => "Invalid username or password."]);
+$userFound = false;
+
+// Check each table for the credentials
+foreach ($tables as $table => $userType) {
+    // Use prepared statement to prevent SQL injection
+    $stmt = $conn->prepare("SELECT * FROM $table WHERE username = ? AND password = ?");
+    $stmt->bind_param("ss", $username, $password);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    if ($result && $result->num_rows > 0) {
+        $user = $result->fetch_assoc();
+        echo json_encode([
+            "success" => true,
+            "message" => "Login successful",
+            "userType" => $userType,
+            "userData" => $user
+        ]);
+        $userFound = true;
+        $stmt->close();
+        break;
+    }
+    $stmt->close();
+}
+
+if (!$userFound) {
+    echo json_encode([
+        "success" => false,
+        "message" => "Invalid username or password"
+    ]);
 }
 
 $conn->close();
