@@ -14,7 +14,7 @@ switch ($type) {
         break;
 
     case 'dispensaries':
-        $sql = "SELECT id, address, city, license_number, contact_number, doctor_id, open_time, close_time FROM dispensaries";
+        $sql = "SELECT id,name, address, city, license_number, contact_number, doctor_id, open_time, close_time FROM dispensaries";
         break;
     case 'countdispensaries':
             $sql ="SELECT COUNT(*) AS total_dispensaries
