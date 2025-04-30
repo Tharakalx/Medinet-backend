@@ -1,7 +1,7 @@
 
 <?php
 include 'db_connect.php';
-$conn = connectDB();
+
 
 if (!$conn) {
     http_response_code(500);

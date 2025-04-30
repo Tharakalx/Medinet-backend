@@ -1,6 +1,6 @@
 <?php
 require 'db_connect.php'; // or db_connection.php, make it consistent
-$conn = connectDB();
+
 
 if (isset($_GET['patient_id'])) {
     $patient_id = $conn->real_escape_string($_GET['patient_id']);

@@ -1,6 +1,6 @@
 <?php
 include 'db_connect.php';
-$conn = connectDB();
+
 
 $patientId = $_POST['patient_id'];
 $description = $_POST['description'];
