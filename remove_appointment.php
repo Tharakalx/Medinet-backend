@@ -1,6 +1,6 @@
 <?php
 include 'db_connect.php';
-$conn = connectDB();
+
 
 $appointmentId = $_POST['id'];
 
