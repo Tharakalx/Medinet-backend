@@ -1,16 +1,18 @@
-<?php
 
-    $host = 'localhost';
-    $user = 'root';
-    $password = '';
-    $database = 'medinetdb';
 
-    $conn = new mysqli($host, $user, $password, $database);
+  <?php
+$host = 'localhost';
+$user = 'root';  
+$password = 'admin';  
+$database = 'medinetdb';
 
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
+// Connect to MySQL
+$conn = new mysqli($host, $user, $password, $database);
 
-    return $conn;
-
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
 ?>
+
+
